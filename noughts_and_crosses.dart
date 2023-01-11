@@ -36,7 +36,7 @@ List<String> SetPlayerNames(){
 	return players;
 }
 
-void PlayMove(int player, List<List<String>> board, List<String> sign, List<String> players){
+void PlayMove(int player, List<List<String>> board, List<String> sign, List<String> players, List<int?> moves){
   stdout.write("Enter square which player ${players[player]} has selected : ");
   String? s = stdin.readLineSync();
   int selected = 0;
@@ -46,12 +46,13 @@ void PlayMove(int player, List<List<String>> board, List<String> sign, List<Stri
   int row = (selected-1)~/3;
   int element = (selected-1)%3;
   
-  if (board[row][element] != 'X' || board[row][element] !=  'O'){ 
-	board[row][element] = sign[player];
+  if (moves.contains(selected)){ 
+	print("Invalid Square");
+	PlayMove(player, board, sign, players, moves);
   }
   else {
-	print("Invalid Square");
-	PlayMove(player, board, sign, players);
+  board[row][element] = sign[player];
+  moves.add(selected);
   }
 }
 
@@ -75,6 +76,7 @@ String CheckWin(List<List<String>> board){
 
 void main(){
 	List<String> signs = ['O','X'];
+  List<int?> moves = [];
 	int current_player = 1;
 	var b1 = CreateBoard();
 	List<String> players = SetPlayerNames();
@@ -83,12 +85,18 @@ void main(){
 		DisplayBoard(b1);
 		print("");
 		if (current_player == 3){current_player = 1;}; 
-		PlayMove(current_player-1, b1, signs, players);
+		PlayMove(current_player-1, b1, signs, players, moves);
 		if (CheckWin(b1) == 'X'){
+      print(Process.runSync("clear", [], runInShell: true).stdout);
+      DisplayBoard(b1);
+      print("\n");
 			print("${players[1]} Wins!");
 			exit(0);
 		}
 		else if (CheckWin(b1) == 'O'){
+      print(Process.runSync("clear", [], runInShell: true).stdout);
+      DisplayBoard(b1);
+      print("\n");
 			print("${players[0]} Wins!");
 			exit(0);
 		}
