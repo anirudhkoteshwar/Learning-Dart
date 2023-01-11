@@ -37,24 +37,25 @@ List<String> SetPlayerNames(){
 }
 
 void PlayMove(int player, List<List<String>> board, List<String> sign, List<String> players, List<int?> moves){
-  stdout.write("Enter square which player ${players[player]} has selected : ");
-  String? s = stdin.readLineSync();
-  int selected = 0;
-  if (s != null){
-	 selected = int.parse(s);
-	}
-  int row = (selected-1)~/3;
-  int element = (selected-1)%3;
-  
-  if (moves.contains(selected)){ 
-	print("Invalid Square");
-	PlayMove(player, board, sign, players, moves);
-  }
-  else {
-  board[row][element] = sign[player];
-  moves.add(selected);
-  }
+    stdout.write("Enter square which player ${players[player]} has selected : ");
+    String? s = stdin.readLineSync();
+    int selected = 0;
+    if (s != null){
+    selected = int.parse(s);
+    }
+    int row = (selected-1)~/3;
+    int element = (selected-1)%3;
+    
+    if (moves.contains(selected)){ 
+    print("Invalid Square");
+    PlayMove(player, board, sign, players, moves);
+    }
+    else {
+    board[row][element] = sign[player];
+    moves.add(selected);
+    }
 }
+
 
 String CheckWin(List<List<String>> board){
 	for (int i = 0; i < 3; i++){
@@ -75,8 +76,9 @@ String CheckWin(List<List<String>> board){
 }
 
 void main(){
+
 	List<String> signs = ['O','X'];
-  List<int?> moves = [];
+	List<int?> moves = [];
 	int current_player = 1;
 	var b1 = CreateBoard();
 	List<String> players = SetPlayerNames();
@@ -102,7 +104,15 @@ void main(){
 		}
 	 	current_player++;
 		print(Process.runSync("clear", [], runInShell: true).stdout);
-	}
-
-	
+	}	
 }
+
+/* on RangeError {
+			print(Process.runSync("clear", [], runInShell: true).stdout);
+			print("Player has chosen non-existant square. Please try again.");
+			print("\n");
+			DisplayBoard(b1);
+			print('');
+			PlayMove(current_player, b1, signs, players, moves);
+		}
+*/
