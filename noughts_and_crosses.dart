@@ -20,6 +20,7 @@ void DisplayBoard(List<List<String>> Board){
 		}
 		if (i<2){
 			stdout.write('----------\n');
+			
 		}
 	}
 }
@@ -43,6 +44,7 @@ void PlayMove(int player, List<List<String>> board, List<String> sign, List<Stri
     if (s != null){
     selected = int.parse(s);
     }
+    if (selected > 0 && selected < 10){
     int row = (selected-1)~/3;
     int element = (selected-1)%3;
     
@@ -53,6 +55,11 @@ void PlayMove(int player, List<List<String>> board, List<String> sign, List<Stri
     else {
     board[row][element] = sign[player];
     moves.add(selected);
+    }
+    }
+    else {
+    print("Invalid Square");
+    PlayMove(player, board, sign, players, moves);
     }
 }
 
